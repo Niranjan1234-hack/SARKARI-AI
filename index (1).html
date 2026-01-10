@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>സർക്കാരി AI - സർക്കാർ അപേക്ഷകൾ</title>
+    <link rel="icon" href="logo.png" type="image/icon">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo-container">
+                <img src="logo.png" alt="Sarkari AI Logo" class="logo">
+                <div class="family-code">
+                    <span>Family Code: </span>
+                    <span id="familyCode">SKAI-${Math.floor(1000 + Math.random() * 9000)}</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="app-container">
+            <div class="input-section">
+                <h2>താങ്കളുടെ അപേക്ഷ വിവരങ്ങൾ നൽകുക</h2>
+                <form id="applicationForm">
+                    <div class="form-group">
+                        <label for="department">വകുപ്പ് തിരഞ്ഞെടുക്കുക:</label>
+                        <select id="department" required>
+                            <option value="">തിരഞ്ഞെടുക്കുക</option>
+                            <option value="revenue">റവന്യൂ വകുപ്പ്</option>
+                            <option value="police">പോലീസ് വകുപ്പ്</option>
+                            <option value="education">വിദ്യാഭ്യാസ വകുപ്പ്</option>
+                            <option value="health">ആരോഗ്യ വകുപ്പ്</option>
+                            <option value="pwd">പി.ഡബ്ല്യു.ഡി</option>
+                            <option value="other">മറ്റുള്ളവ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="purpose">അപേക്ഷയുടെ ഉദ്ദേശ്യം:</label>
+                        <input type="text" id="purpose" required placeholder="ഉദാ: കുടുംബ ഭവനത്തിനുള്ള സർട്ടിഫിക്കറ്റ്" autocomplete="off">
+                        <small style="color: #666; font-size: 0.8rem; display: block; margin-top: 0.25rem;">വകുപ്പ് തിരഞ്ഞെടുത്താൽ സൂചനകൾ കാണാം</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="details">വിശദാംശങ്ങൾ:</label>
+                        <textarea id="details" rows="6" required placeholder="നിങ്ങളുടെ അപേക്ഷയുടെ വിശദാംശങ്ങൾ ഇവിടെ ടൈപ്പ് ചെയ്യുക..."></textarea>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                            <button type="button" id="aiEnhanceBtn" class="btn btn-secondary" style="font-size: 0.875rem;">
+                                ✨ AI ഉപയോഗിച്ച് മെച്ചപ്പെടുത്തുക
+                            </button>
+                            <button type="button" id="translateBtn" class="btn btn-secondary" style="font-size: 0.875rem;">
+                                🔄 English ↔ മലയാളം പരിഭാഷ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">പേര്:</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">വിലാസം:</label>
+                            <input type="text" id="address" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="mobile">മൊബൈൽ നമ്പർ:</label>
+                            <input type="tel" id="mobile" pattern="[0-9]{10}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">ഇമെയിൽ:</label>
+                            <input type="email" id="email">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">അപേക്ഷ സൃഷ്ടിക്കുക</button>
+                        <button type="reset" class="btn btn-secondary">വൃത്തിയാക്കുക</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-header">
+                    <h2>അപേക്ഷയുടെ പ്രിവ്യൂ</h2>
+                    <button id="downloadPdf" class="btn btn-primary" disabled>PDF ഡൗൺലോഡ് ചെയ്യുക</button>
+                </div>
+                <div id="documentPreview" class="document-preview">
+                    <p class="placeholder-text">നിങ്ങളുടെ അപേക്ഷ ഇവിടെ കാണാം...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 സർക്കാരി AI - സർക്കാർ അപേക്ഷകൾ സൃഷ്ടിക്കാൻ</p>
+            <p class="disclaimer">ഈ സേവനം സർക്കാരിന്റെ ഔദ്യോഗിക വെബ്സൈറ്റ് അല്ല. ഉദ്ദേശിക്കുന്ന ഉപയോഗം മാത്രമാണ്.</p>
+        </div>
+    </footer>
+</body>
+</html>
